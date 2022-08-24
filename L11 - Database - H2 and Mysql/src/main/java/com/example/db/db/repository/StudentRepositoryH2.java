@@ -23,6 +23,7 @@ public class StudentRepositoryH2 implements IStudentRepository, InitializingBean
             "  PRIMARY KEY (`id`) " +
             ")  ";
 
+
     private static final String INSERT_INTO_STUDENT = " INSERT INTO `student`(`name`, `age`)" +
             " values (?,?) ";
 
@@ -41,11 +42,11 @@ public class StudentRepositoryH2 implements IStudentRepository, InitializingBean
     @SneakyThrows
     @Override
     /**
-     * uuid = 1; drop database;
+     * SELECT * from `student` where id = 1; drop database;
      */
-    public Optional<Student> findById(Integer uuid) {
+    public Optional<Student> findById(Integer studentId) {
         Statement fetch = connection.createStatement();
-        ResultSet resultSet = fetch.executeQuery(FIND_STUDENT + uuid);
+        ResultSet resultSet = fetch.executeQuery(FIND_STUDENT + studentId);
         Student output = null;
         while (resultSet.next()){
             output = Student.builder()
@@ -72,6 +73,8 @@ public class StudentRepositoryH2 implements IStudentRepository, InitializingBean
         } catch (Exception exception){
             log.error("error received" ,exception);
         }
+
+
 
     }
 }

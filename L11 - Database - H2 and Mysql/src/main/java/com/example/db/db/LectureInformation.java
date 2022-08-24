@@ -10,6 +10,49 @@ public class LectureInformation {
      *      importance of status code
      *
      *
+     *      problem
+     *          --> Producer - (Paytm) -- 10
+     *                  --> (UberEats) -- 200
+     *       (Paytm Signature)           /v1/payment
+     *                      HTTP status code - 2xx
+     *                      {
+     *                          statusCode : "ERR_something error"
+     *                                          "Some free flow text"
+     *                                          statusMessage =  "Error"
+     *                      }
+     *
+     *        (Uber added checks)                             2xx
+     *                                                             {
+     *                                                            identified in case of success
+     *                                                          }
+     *                                                        and fail in case 2xx and statusMessage = "Error"
+     *
+     *  flow
+     *                    (1 st time invoked paytm api gave)  HTTP status code - 2xx
+     *                      {
+     *                          statusCode : "ERR_something error"
+     *                                          "Some free flow text"
+     *                      }
+     *
+     *
+     *                     (2 nd time invoked paytm api gave)  HTTP status code - 2xx
+     *                      {
+     *                          statusCode : "ERR_something error"
+     *                          statusMessage = "ERROR"
+     *                      }
+     *
+     *
+     *              --> uber accepted this as success.. (and went on to place a successful order)
+     *
+     *              (versioning of apis -- /V1/V2/)
+     *
+     *      Solution
+     *          -->
+     *                      statusCode (should be appropriately set)
+     *
+     *
+     *
+     *
      *
      *          Why its not --> ?? PUT method --> its changing the state of the instance over the server
      *
@@ -125,6 +168,11 @@ public class LectureInformation {
      *
      *
      *          (order success) --> notification can read from it
+     *
+     *
+     *
+     *          CreateStatement vs PreparedStatment
+     *          (SQL injection)
      *
      * @param args
      */

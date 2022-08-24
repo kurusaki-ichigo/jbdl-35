@@ -10,7 +10,7 @@ import java.sql.*;
 import java.util.Objects;
 import java.util.Optional;
 
-@Repository("sqlRepository")
+//@Repository("sqlRepository")
 @Slf4j
 public class StudentRepositoryMySql implements IStudentRepository , InitializingBean {
 

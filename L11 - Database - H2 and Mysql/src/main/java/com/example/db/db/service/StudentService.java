@@ -3,6 +3,7 @@ package com.example.db.db.service;
 import com.example.db.db.model.entities.Student;
 import com.example.db.db.model.requests.CreateStudentDto;
 import com.example.db.db.repository.IStudentRepository;
+import com.example.db.db.repository.StudentJPARepository;
 import com.example.db.db.repository.StudentRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +22,16 @@ public class StudentService {
     @Qualifier("h2Repository")
     IStudentRepository studentRepository;
 
+    @Autowired
+    StudentJPARepository studentJPARepository;
+
 
     public Student saveStudent(CreateStudentDto request){
         Student student = request.toStudent();
         log.info(" student instance {} ", student);
         Student save = studentRepository.save(student);
+
+        studentJPARepository.save(save);
         log.info(" saved student {} ", save);
         return save;
     }
