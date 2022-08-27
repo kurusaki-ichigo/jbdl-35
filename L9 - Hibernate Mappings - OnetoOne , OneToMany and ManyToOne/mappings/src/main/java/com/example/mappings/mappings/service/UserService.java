@@ -31,6 +31,9 @@ public class UserService {
     }
 
     public Optional<Users> getUser(String email){
+        /**
+         * email can be null then ---> exception
+         */
         if(email.isEmpty()){
             throw new InvalidInputException(StatusCodes.INVALID_INPUT);
         }
@@ -63,6 +66,9 @@ public class UserService {
         Users userInfo = byEmail.get();
         delete(userInfo);
 
+        /**
+         * kindly extract static strings 
+         */
         return "User deleted for email: " + email;
     }
 

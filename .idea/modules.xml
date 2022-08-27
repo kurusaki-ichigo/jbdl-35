@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/L8 - Spring Data JPA and Hibernate/data.iml" filepath="$PROJECT_DIR$/L8 - Spring Data JPA and Hibernate/data.iml" />
       <module fileurl="file://$PROJECT_DIR$/L11 - Database - H2 and Mysql/db.iml" filepath="$PROJECT_DIR$/L11 - Database - H2 and Mysql/db.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/jbdl-35.iml" filepath="$PROJECT_DIR$/.idea/jbdl-35.iml" />
+      <module fileurl="file://$PROJECT_DIR$/L9 - Hibernate Mappings - OnetoOne , OneToMany and ManyToOne/mappings/mappings.iml" filepath="$PROJECT_DIR$/L9 - Hibernate Mappings - OnetoOne , OneToMany and ManyToOne/mappings/mappings.iml" />
     </modules>
   </component>
 </project>
