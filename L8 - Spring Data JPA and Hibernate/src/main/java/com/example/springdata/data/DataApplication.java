@@ -24,6 +24,7 @@ public class DataApplication {
 	 *  	- Snake and Ladder Game
 	 *  	- Parking Lot
 	 *  	- Chegg.com
+	 *  	- E wallet
 	 *
 	 *
 	 *  		Covered till now
