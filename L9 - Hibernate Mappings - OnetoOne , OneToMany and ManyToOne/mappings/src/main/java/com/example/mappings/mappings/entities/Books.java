@@ -24,6 +24,9 @@ import java.util.Objects;
 public class Books {
 
 
+    @Version
+    long version;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long bookId;

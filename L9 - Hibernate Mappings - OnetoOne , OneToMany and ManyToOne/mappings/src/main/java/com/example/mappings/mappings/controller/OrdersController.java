@@ -4,6 +4,7 @@ import com.example.mappings.mappings.requests.CreateBookRequest;
 import com.example.mappings.mappings.service.OrderService;
 import com.example.mappings.mappings.utils.ResponseGenerator;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -30,6 +31,7 @@ public class OrdersController {
     public ResponseEntity<String> createABook(@RequestParam(value = "userEmail") String email,
                                               @RequestParam(value = "isbn") String isbn) {
         log.info("Request Received {}  {} ", email, isbn);
+        Thread.currentThread().setName(MDC.get("traceId"));
         return responseGenerator.generateResponse(orderService.placeOrder(email, isbn), HttpStatus.CREATED);
     }
 

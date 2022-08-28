@@ -25,9 +25,6 @@ public class Orders {
     @Enumerated(value = EnumType.STRING)
     OrderStatus orderStatus;
 
-    @Version
-    long version;
-
     double amount;
 
     @CreationTimestamp
