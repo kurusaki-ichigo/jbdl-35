@@ -23,6 +23,9 @@ public class Authors {
 
     String name;
 
+
+    String email;
+
     @CreationTimestamp
     LocalDateTime createdAt;
 
