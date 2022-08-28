@@ -1,6 +1,7 @@
 package com.example.mappings.mappings.entities;
 
 import com.example.mappings.mappings.enums.BookStatus;
+//import com.example.mappings.mappings.jpalistener.BookListener;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
@@ -9,6 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -18,6 +20,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
+//@EntityListeners(BookListener.class)
 public class Books {
 
 
@@ -58,5 +61,24 @@ public class Books {
     @ManyToOne
     @JoinColumn
     private Orders order;
+
+    /**
+     *
+     * Events transmitted around the JPAEntity lifecycle
+     *                          (isNew)
+     *         pre persist <---/        \----> Post persist
+     *
+     *                          (updated)
+     *         preUpdate<------/        \-----> Post Update
+     *         preRemove  <-----/            \------> postremove
+     *
+     *
+     */
+    @PrePersist
+    private void markStatusAvailable(){
+        this.bookStatus = BookStatus.AVAILABLE;
+    }
+
+
 
 }

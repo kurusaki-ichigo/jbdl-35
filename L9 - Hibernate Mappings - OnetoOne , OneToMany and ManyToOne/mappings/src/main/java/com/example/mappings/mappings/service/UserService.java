@@ -44,7 +44,16 @@ public class UserService {
         delete(findExistingUserByEmail(email));
     }
 
-    private Users findExistingUserByEmail(String email) {
+    /**
+     * <p>
+     *     this method is used to fetch the user if exists and
+     *     if a user does not it throws exception
+     * </p>
+     * @param email
+     * @return
+     * @apiNote : throws {@link  UserInvalidException}
+     */
+    public Users findExistingUserByEmail(String email) {
         Optional<Users> byEmail = findUserIfExistsByEmail(email);
         if(byEmail.isEmpty()){
             throw new UserInvalidException(StatusCodes.USER_DOES_NOT_EXISTS);

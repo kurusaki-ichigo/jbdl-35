@@ -2,6 +2,7 @@ package com.example.mappings.mappings.requests;
 
 import com.example.mappings.mappings.entities.Authors;
 import com.example.mappings.mappings.entities.Books;
+import com.example.mappings.mappings.enums.BookStatus;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;

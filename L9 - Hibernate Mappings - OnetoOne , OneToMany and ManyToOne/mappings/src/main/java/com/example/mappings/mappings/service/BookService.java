@@ -2,6 +2,7 @@ package com.example.mappings.mappings.service;
 
 import com.example.mappings.mappings.entities.Authors;
 import com.example.mappings.mappings.entities.Books;
+import com.example.mappings.mappings.enums.BookStatus;
 import com.example.mappings.mappings.enums.StatusCodes;
 import com.example.mappings.mappings.exceptions.AuthorNotFoundException;
 import com.example.mappings.mappings.exceptions.BookNotFoundException;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.awt.print.Book;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -49,6 +51,16 @@ public class BookService {
 
     private Books saveOrUpdate(Books books) {
         return repository.save(books);
+    }
+
+
+    public List<Books> issueBookAndPersist(List<Books> books){
+
+        books.forEach(book -> {
+            book.setBookStatus(BookStatus.ISSUED);
+            saveOrUpdate(book);
+        });
+        return books;
     }
 
     /**
@@ -134,11 +146,16 @@ public class BookService {
      * @return
      */
     public Page<Books> fetchAllBooks(Integer pageNumber){
+        Sort sort = Sort.by(Sort.Direction.DESC, "name");
         PageRequest pageRequest = PageRequest.of(pageNumber, 20);
         return repository.findByCreatedAtLessThan(LocalDateTime.now(), pageRequest);
     }
 
-
+    /**
+     *
+     * @param isbn
+     * @return
+     */
     public Books findBookByIsbn(String isbn){
         Optional<Books> byIsbn = repository.findByIsbn(isbn);
         if(byIsbn.isEmpty()) {
@@ -147,4 +164,11 @@ public class BookService {
         return byIsbn.get();
     }
 
+    public void makeBooksAvailable(List<Books> booksList) {
+        booksList.forEach(book -> {
+            book.setBookStatus(BookStatus.AVAILABLE);
+            saveOrUpdate(book);
+        });
+//        return booksList;
+    }
 }
