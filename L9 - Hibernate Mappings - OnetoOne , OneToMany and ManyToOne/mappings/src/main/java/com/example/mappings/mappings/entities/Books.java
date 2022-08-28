@@ -1,6 +1,8 @@
 package com.example.mappings.mappings.entities;
 
 import com.example.mappings.mappings.enums.BookStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -15,8 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-
-
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Books {
 
 

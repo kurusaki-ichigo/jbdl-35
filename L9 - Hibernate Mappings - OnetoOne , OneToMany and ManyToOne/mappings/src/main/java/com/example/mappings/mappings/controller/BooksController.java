@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -30,6 +28,20 @@ public class BooksController {
     public ResponseEntity<String> createABook(@Valid @RequestBody CreateBookRequest bookInfo) {
         log.info("Request Received {} ", bookInfo);
         return responseGenerator.generateResponse(bookService.createBook(bookInfo), HttpStatus.CREATED);
+    }
+
+    @GetMapping(value = "/v2/book", produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> fetchABookByIsbn(@RequestParam(value = "isbn") String isbn) {
+        log.info("Request Received {} ", isbn);
+        return responseGenerator.generateResponse(bookService.findBookByIsbn(isbn), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/v2/books", produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> fetchAll(@RequestParam(value = "pageNumber", defaultValue = "0") Integer pageNumber) {
+        log.info("Request Received {} ", pageNumber);
+        return responseGenerator.generateResponse(bookService.fetchAllBooks(pageNumber), HttpStatus.OK);
     }
 
 }

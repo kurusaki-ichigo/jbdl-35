@@ -1,5 +1,7 @@
 package com.example.mappings.mappings.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -39,6 +41,8 @@ public class Authors {
      */
 
     @OneToMany(mappedBy = "associatedAuthor")
+    @ToString.Exclude
+    @JsonIgnore
     List<Books> associatedBooks;
 
 

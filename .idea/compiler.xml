@@ -7,8 +7,8 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="data" />
-        <module name="db" />
         <module name="mappings" />
+        <module name="db" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
