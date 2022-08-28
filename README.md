@@ -34,4 +34,25 @@
         *   Caching Case Study with Tiny Url and JVM Cache - Ehcache.
         *   Distributed Cache - Redis.
 
+#### **_Week 5_**
 
+    Lecture 13 (Upcoming):
+        *   Kafka - setup and basic introduction
+
+    Lecture 14 (Upcoming):
+        *   Kafka implentation
+
+#### **_Week 6_**
+
+    Lecture 13 (Upcoming):
+        *   Introduction to Spring Security
+        *   JWT authentication
+
+    Lecture 14 (UpcomingUpcoming):
+        *   Spring Security Revised
+        *   OAuth Authentication Implementation - Google and Githib
+
+
+#### **_Week 7_**
+Lecture 15 && 16 (Upcoming):
+*   Major Project - Ewallet
