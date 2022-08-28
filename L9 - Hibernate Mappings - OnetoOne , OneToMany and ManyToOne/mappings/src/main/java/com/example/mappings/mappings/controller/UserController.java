@@ -1,9 +1,9 @@
 package com.example.mappings.mappings.controller;
 
-import com.example.mappings.mappings.entities.Users;
 import com.example.mappings.mappings.requests.CreateUserRequest;
 import com.example.mappings.mappings.requests.UpdateUserRequest;
 import com.example.mappings.mappings.service.UserService;
+import com.example.mappings.mappings.utils.ResponseGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Optional;
 
 @RestController
 @Slf4j
@@ -22,31 +21,35 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    ResponseGenerator responseGenerator;
+
+    private static final String USER_DELETED = "The given user is deleted";
+
     @PostMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Users> createAUser(@Valid @RequestBody CreateUserRequest userInfo){
-        log.info("Create User Request Received {} " , userInfo);
-        return new ResponseEntity<>(userService.createUser(userInfo), HttpStatus.CREATED);
+    public ResponseEntity<String> createAUser(@Valid @RequestBody CreateUserRequest userInfo) {
+        log.info("Create User Request Received {} ", userInfo);
+        return responseGenerator.generateResponse(userService.createUser(userInfo), HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Optional<Users>> getAUser(@RequestParam(value = "email") String email){
-        log.info("Get User Request Received {} " , email);
-        return new ResponseEntity<>(userService.getUser(email), HttpStatus.OK);
+    public ResponseEntity<String> getAUser(@RequestParam(value = "email") String email) {
+        log.info("Get User Request Received {} ", email);
+        return responseGenerator.generateResponse(userService.getUser(email), HttpStatus.OK);
     }
 
     @PutMapping(value = "/user", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Users> updateAUser(@Valid @RequestBody UpdateUserRequest userInfo){
-        log.info("Update User Request Received {} " , userInfo);
-        return new ResponseEntity<>(userService.updateUser(userInfo), HttpStatus.OK);
+    public ResponseEntity<String> updateAUser(@Valid @RequestBody UpdateUserRequest userInfo) {
+        log.info("Update User Request Received {} ", userInfo);
+        return responseGenerator.generateResponse(userService.updateUser(userInfo), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> deleteAUser(@RequestParam(value = "email") String email){
-        log.info("Get User Request Received {} " , email);
-        return new ResponseEntity<>(userService.deleteUser(email), HttpStatus.OK);
+    public ResponseEntity<String> deleteAUser(@RequestParam(value = "email") String email) {
+        log.info("Get User Request Received {} ", email);
+        userService.deleteUser(email);
+        return responseGenerator.generateResponse(USER_DELETED, HttpStatus.OK);
     }
-
-
 
 
     /**
@@ -80,7 +83,6 @@ public class UserController {
      *
      *
      */
-
 
 
 }

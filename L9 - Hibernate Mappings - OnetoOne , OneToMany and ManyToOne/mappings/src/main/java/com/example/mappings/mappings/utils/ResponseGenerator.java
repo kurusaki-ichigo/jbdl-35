@@ -15,16 +15,28 @@ import org.springframework.stereotype.Component;
 public class ResponseGenerator {
 
 
-    private static final ObjectMapper mapper = new ObjectMapper();
 
+    private static ObjectMapper mapper;
+    static {
+        mapper = new ObjectMapper();
+        mapper.findAndRegisterModules();
+    }
 
     @SneakyThrows
-    public <T> ResponseEntity<String> generateResponse(StatusCodes status){
+    public ResponseEntity<String> generateResponse(StatusCodes status){
         ResponseInfo<String> responseInfo = new ResponseInfo<>();
         responseInfo.setErrorCode(status.getMessageCode());
         responseInfo.setErrorMessage(status.getMessage());
         responseInfo.setTraceId(MDC.get("traceId"));
         return new ResponseEntity<>(mapper.writeValueAsString(responseInfo), status.getStatus());
+    }
+
+    @SneakyThrows
+    public <T> ResponseEntity<String> generateResponse(T data , HttpStatus status){
+        ResponseInfo<T> responseInfo = new ResponseInfo<>();
+        responseInfo.setData(data);
+        responseInfo.setTraceId(MDC.get("traceId"));
+        return new ResponseEntity<>(mapper.writeValueAsString(responseInfo), status);
     }
 
 

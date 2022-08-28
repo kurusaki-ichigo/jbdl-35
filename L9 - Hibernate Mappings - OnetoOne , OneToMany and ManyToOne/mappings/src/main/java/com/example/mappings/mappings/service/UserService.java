@@ -2,7 +2,6 @@ package com.example.mappings.mappings.service;
 
 import com.example.mappings.mappings.entities.Users;
 import com.example.mappings.mappings.enums.StatusCodes;
-import com.example.mappings.mappings.exceptions.BaseException;
 import com.example.mappings.mappings.exceptions.InvalidInputException;
 import com.example.mappings.mappings.exceptions.UserExistsException;
 import com.example.mappings.mappings.exceptions.UserInvalidException;
@@ -12,6 +11,7 @@ import com.example.mappings.mappings.requests.UpdateUserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -31,47 +31,33 @@ public class UserService {
     }
 
     public Optional<Users> getUser(String email){
-        /**
-         * email can be null then ---> exception
-         */
-        if(email.isEmpty()){
-            throw new InvalidInputException(StatusCodes.INVALID_INPUT);
-        }
-        Optional<Users> byEmail = userRepository.findByEmail(email);
-        if(byEmail.isEmpty()){
-            throw new UserInvalidException(StatusCodes.USER_DOES_NOT_EXISTS);
-        }
-        return byEmail;
+        return findUserIfExistsByEmail(email);
     }
 
     public Users updateUser(UpdateUserRequest userRequest){
-        Optional<Users> byEmail = userRepository.findByEmail(userRequest.getEmail());
-        if(byEmail.isEmpty()){
-            throw new UserInvalidException(StatusCodes.USER_DOES_NOT_EXISTS);
-        }
-
-        Users userInfo = byEmail.get();
+        Users userInfo = findExistingUserByEmail(userRequest.getEmail());
         userInfo.setName(userRequest.getName());
         return saveOrUpdate(userInfo);
     }
 
-    public String deleteUser(String email){
-        if(email.isEmpty()){
-            throw new InvalidInputException(StatusCodes.INVALID_INPUT);
-        }
-        Optional<Users> byEmail = userRepository.findByEmail(email);
+    public void deleteUser(String email){
+        delete(findExistingUserByEmail(email));
+    }
+
+    private Users findExistingUserByEmail(String email) {
+        Optional<Users> byEmail = findUserIfExistsByEmail(email);
         if(byEmail.isEmpty()){
             throw new UserInvalidException(StatusCodes.USER_DOES_NOT_EXISTS);
         }
-        Users userInfo = byEmail.get();
-        delete(userInfo);
-
-        /**
-         * kindly extract static strings 
-         */
-        return "User deleted for email: " + email;
+        return byEmail.get();
     }
 
+    private Optional<Users> findUserIfExistsByEmail(String email) {
+        if(Objects.isNull(email) || email.isBlank()){
+            throw new InvalidInputException(StatusCodes.INVALID_INPUT);
+        }
+        return userRepository.findByEmail(email);
+    }
 
 
     private Users saveOrUpdate(Users users){
