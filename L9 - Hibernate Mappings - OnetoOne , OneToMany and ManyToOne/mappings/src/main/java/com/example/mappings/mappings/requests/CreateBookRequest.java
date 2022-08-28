@@ -5,6 +5,7 @@ import com.example.mappings.mappings.entities.Books;
 import com.example.mappings.mappings.entities.Users;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Data
@@ -17,9 +18,10 @@ public class CreateBookRequest  {
     @NotNull
     double amount;
 
-    @NotNull
+    @NotBlank
     String authorEmail;
 
+    @NotNull
     String authorName;
 
     public Authors toAuthor(){
