@@ -2,13 +2,16 @@ package com.example.mappings.mappings.service;
 
 import com.example.mappings.mappings.entities.Users;
 import com.example.mappings.mappings.enums.StatusCodes;
-import com.example.mappings.mappings.exceptions.BaseException;
+import com.example.mappings.mappings.exceptions.InvalidInputException;
 import com.example.mappings.mappings.exceptions.UserExistsException;
+import com.example.mappings.mappings.exceptions.UserInvalidException;
 import com.example.mappings.mappings.repository.UserRepository;
 import com.example.mappings.mappings.requests.CreateUserRequest;
+import com.example.mappings.mappings.requests.UpdateUserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -27,10 +30,41 @@ public class UserService {
        return saveOrUpdate(users);
     }
 
+    public Optional<Users> getUser(String email){
+        return findUserIfExistsByEmail(email);
+    }
+
+    public Users updateUser(UpdateUserRequest userRequest){
+        Users userInfo = findExistingUserByEmail(userRequest.getEmail());
+        userInfo.setName(userRequest.getName());
+        return saveOrUpdate(userInfo);
+    }
+
+    public void deleteUser(String email){
+        delete(findExistingUserByEmail(email));
+    }
+
+    private Users findExistingUserByEmail(String email) {
+        Optional<Users> byEmail = findUserIfExistsByEmail(email);
+        if(byEmail.isEmpty()){
+            throw new UserInvalidException(StatusCodes.USER_DOES_NOT_EXISTS);
+        }
+        return byEmail.get();
+    }
+
+    private Optional<Users> findUserIfExistsByEmail(String email) {
+        if(Objects.isNull(email) || email.isBlank()){
+            throw new InvalidInputException(StatusCodes.INVALID_INPUT);
+        }
+        return userRepository.findByEmail(email);
+    }
+
 
     private Users saveOrUpdate(Users users){
        return userRepository.save(users);
     }
+
+    private void delete(Users users){ userRepository.delete(users); }
 
 
 }
