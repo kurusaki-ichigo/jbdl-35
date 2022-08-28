@@ -29,6 +29,9 @@ public class BookService {
     public Books createBook(CreateBookRequest bookRequest){
         Books book = bookRequest.toBook();
         Optional<Authors> byEmail = authorRepository.findByEmail(book.getAssociatedAuthor().getEmail());
+        /**
+         * here is the issue --> save author first then book
+         */
         if(byEmail.isPresent()){
             return saveBook(book);
         }
@@ -43,6 +46,7 @@ public class BookService {
             bookInfo.setName(updateBookRequest.getName());
             bookRepository.save(bookInfo);
         }
+        // bad way -- throw exception first
         throw new RuntimeException();
     }
 
@@ -54,6 +58,11 @@ public class BookService {
         return bookRepository.save(books);
     }
 
+    /**
+     * bad code -- author should be saved in authro repositoruy
+     * @param authors
+     * @return
+     */
     private  Authors saveAuthor(Authors authors){
         return authorRepository.save(authors);
     }

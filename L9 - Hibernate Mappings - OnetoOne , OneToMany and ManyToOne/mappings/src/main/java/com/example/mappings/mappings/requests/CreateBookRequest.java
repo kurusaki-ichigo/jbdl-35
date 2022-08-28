@@ -20,9 +20,12 @@ public class CreateBookRequest  {
     @NotNull
     String authorEmail;
 
+    String authorName;
+
     public Authors toAuthor(){
         return Authors.builder()
                 .email(authorEmail)
+                .name(authorName)
                 .build();
     }
     public Books toBook() {
