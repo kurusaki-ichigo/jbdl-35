@@ -34,3 +34,6 @@
     Lecture 12 (Upcoming):
         *   Caching Case Study with Tiny Url and JVM Cache - Ehcache.
         *   Distributed Cache - Redis.
+
+    Lecture 13 (Upcoming):
+        *   Kafka - setup and basic introduction
