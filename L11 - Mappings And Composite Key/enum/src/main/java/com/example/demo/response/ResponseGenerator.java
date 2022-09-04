@@ -1,0 +1,40 @@
+package com.example.demo.response;
+
+import com.example.demo.enums.StatusCodes;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.SneakyThrows;
+import org.slf4j.MDC;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
+
+@Component
+public class ResponseGenerator {
+
+
+
+    private static ObjectMapper mapper;
+    static {
+        mapper = new ObjectMapper();
+        mapper.findAndRegisterModules();
+    }
+
+    @SneakyThrows
+    public ResponseEntity<String> generateResponse(StatusCodes status){
+        ResponseInfo<String> responseInfo = new ResponseInfo<>();
+        responseInfo.setErrorCode(status.getMessageCode());
+        responseInfo.setErrorMessage(status.getMessage());
+        responseInfo.setTraceId(MDC.get("traceId"));
+        return new ResponseEntity<>(mapper.writeValueAsString(responseInfo), status.getStatus());
+    }
+
+    @SneakyThrows
+    public <T> ResponseEntity<String> generateResponse(T data , HttpStatus status){
+        ResponseInfo<T> responseInfo = new ResponseInfo<>();
+        responseInfo.setData(data);
+        responseInfo.setTraceId(MDC.get("traceId"));
+        return new ResponseEntity<>(mapper.writeValueAsString(responseInfo), status);
+    }
+
+
+}

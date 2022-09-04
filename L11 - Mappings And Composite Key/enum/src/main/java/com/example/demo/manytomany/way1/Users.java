@@ -1,13 +1,12 @@
-package com.example.mappings.mappings.entities;
+package com.example.demo.manytomany.way1;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -16,10 +15,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-//@Table( name = "user_info" , indexes = {@Index(name = "uniqueEmail", columnList = "email_id" , unique = true)})
 public class Users {
 
-    @javax.persistence.Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long userId;
 
@@ -35,9 +33,18 @@ public class Users {
     LocalDateTime updatedAt;
 
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    @JsonIgnore
-    @ToString.Exclude
-    List<Orders> userOrders;
+    /**
+     *              Book     ----(wishlist)------   User
+     *
+     *              1                               N
+     *              N                                1
+     *
+      */
+    @ManyToMany
+    @JoinTable(name = "wishList",
+            joinColumns = @JoinColumn(name = "userId"),
+            inverseJoinColumns = @JoinColumn(name = "bookId"))
+    Set<Books> likedBooks;
+
 
 }

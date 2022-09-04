@@ -34,7 +34,7 @@ public class Orders {
     LocalDateTime updatedAt;
 
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn
     Users user;
 

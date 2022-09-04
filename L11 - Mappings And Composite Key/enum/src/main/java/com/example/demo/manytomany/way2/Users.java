@@ -1,13 +1,12 @@
-package com.example.mappings.mappings.entities;
+package com.example.demo.manytomany.way2;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -16,10 +15,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-//@Table( name = "user_info" , indexes = {@Index(name = "uniqueEmail", columnList = "email_id" , unique = true)})
 public class Users {
 
-    @javax.persistence.Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long userId;
 
@@ -35,9 +33,7 @@ public class Users {
     LocalDateTime updatedAt;
 
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    @JsonIgnore
-    @ToString.Exclude
-    List<Orders> userOrders;
 
+    @OneToMany(mappedBy = "users")
+    Set<CourseRating> ratingSet;
 }
