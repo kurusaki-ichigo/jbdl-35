@@ -31,9 +31,14 @@
         *   JPA many to many relationships
 
 #### **_Week 5_**
-    Lecture 12 (Upcoming):
-        *   Caching Case Study with Tiny Url and JVM Cache - Ehcache.
+    Lecture 12:
+        *   Caching 
+        *   Case Study with Tiny Url and JVM Cache - Ehcache.
         *   Distributed Cache - Redis.
 
     Lecture 13 (Upcoming):
         *   Kafka - setup and basic introduction
+
+#### **_Week 6_**
+    Lecture 14 (Upcoming):
+    *   Kafka implentation

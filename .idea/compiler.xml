@@ -6,14 +6,16 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="data" />
         <module name="mappings" />
+        <module name="data" />
         <module name="db" />
+        <module name="enum" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="data" target="11" />
       <module name="db" target="11" />
+      <module name="enum" target="11" />
       <module name="mappings" target="11" />
     </bytecodeTargetLevel>
   </component>
@@ -21,6 +23,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="data" options="-parameters" />
       <module name="db" options="-parameters" />
+      <module name="enum" options="-parameters" />
       <module name="mappings" options="-parameters" />
     </option>
   </component>
