@@ -38,6 +38,7 @@
 
     Lecture 13:
         *   Kafka - setup and basic introduction
+        *   Designing IRCTC - Rail Booking Application
         *   Kafka implentation
 
 
