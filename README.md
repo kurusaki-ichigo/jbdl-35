@@ -36,9 +36,12 @@
         *   Case Study with Tiny Url and JVM Cache - Ehcache.
         *   Distributed Cache - Redis.
 
-    Lecture 13 (Upcoming):
+    Lecture 13:
         *   Kafka - setup and basic introduction
+        *   Kafka implentation
+
 
 #### **_Week 6_**
     Lecture 14 (Upcoming):
-    *   Kafka implentation
+        *   Spring Security
+
