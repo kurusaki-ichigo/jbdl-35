@@ -43,6 +43,11 @@
 
 
 #### **_Week 6_**
-    Lecture 14 (Upcoming):
-        *   Spring Security
+    Lecture 14 :
+        *   Spring Security Part 1
 
+
+
+#### **_Week 6_**
+    Lecture 15 (Upcoming) :
+        *   Spring Security Part 2
