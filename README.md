@@ -49,5 +49,8 @@
 
 
 #### **_Week 6_**
-    Lecture 15 (Upcoming) :
+    Lecture 15:
         *   Spring Security Part 2
+
+    Lecture 16:
+        *   Major Project - Ewallet

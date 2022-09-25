@@ -1,0 +1,80 @@
+package com.major.ewallet.pocketbook.service;
+
+import com.major.ewallet.pocketbook.entity.Wallet;
+import com.major.ewallet.pocketbook.exception.WalletExistsException;
+import com.major.ewallet.pocketbook.model.PendingTransaction;
+import com.major.ewallet.pocketbook.model.PocketBookUser;
+import com.major.ewallet.pocketbook.repository.WalletRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Objects;
+import java.util.Optional;
+
+@Service
+@Transactional(rollbackFor = Exception.class)
+public class WalletService {
+
+    @Autowired
+    WalletRepository repository;
+
+    @Value("${pocketbook.user.systemId}")
+    Long systemId;
+
+
+    public Wallet createNewWallet(PocketBookUser user){
+        Optional<Wallet> byUserId = repository.findByUserId(user.getId());
+        if(byUserId.isPresent()){
+            throw new WalletExistsException();
+        }
+        return saveOrUpdate(user.toWallet());
+    }
+
+    private Wallet saveOrUpdate(Wallet wallet){
+        return repository.save(wallet);
+    }
+
+
+    public void  topUpWallets(PendingTransaction pendingTransaction){
+        /**
+         * Sender wallet
+         *      and check if there are sufficient funds
+         *  Receiver wallet
+         *
+         *  reduce amount and done
+         *
+         */
+        Optional<Wallet> senderWallet = repository.findByUserId(pendingTransaction.getSenderId());
+        if(senderWallet.isEmpty()){
+            throw new RuntimeException();
+        }
+
+        if(senderWallet.get().getBalance() < pendingTransaction.getAmount() ){
+            // insufficient balance
+            throw new RuntimeException();
+        }
+
+
+        Optional<Wallet> receiverWallet = repository.findByUserId(pendingTransaction.getReceiverId());
+        if(receiverWallet.isEmpty()){
+            throw new RuntimeException();
+        }
+
+        Wallet sender = senderWallet.get();
+        Wallet receiver = receiverWallet.get();
+
+        if(!Objects.equals(sender.getId(), systemId)){
+            sender.setBalance(Double.sum(sender.getBalance() , -1 * pendingTransaction.getAmount()));
+        }
+
+        if(!Objects.equals(receiver.getId(), systemId)){
+            receiver.setBalance(Double.sum(receiver.getBalance() , pendingTransaction.getAmount()));
+        }
+        saveOrUpdate(sender);
+        saveOrUpdate(receiver);
+    }
+
+
+}

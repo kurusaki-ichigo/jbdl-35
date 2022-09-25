@@ -8,10 +8,11 @@
         <outputRelativeToContentRoot value="true" />
         <module name="mappings" />
         <module name="security" />
-        <module name="payment" />
         <module name="data" />
+        <module name="payment" />
         <module name="db" />
         <module name="enum" />
+        <module name="messaging" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -19,6 +20,7 @@
       <module name="db" target="11" />
       <module name="enum" target="11" />
       <module name="mappings" target="11" />
+      <module name="messaging" target="11" />
       <module name="payment" target="11" />
       <module name="security" target="11" />
     </bytecodeTargetLevel>
@@ -29,6 +31,7 @@
       <module name="db" options="-parameters" />
       <module name="enum" options="-parameters" />
       <module name="mappings" options="-parameters" />
+      <module name="messaging" options="-parameters" />
       <module name="payment" options="-parameters" />
       <module name="security" options="-parameters" />
     </option>
