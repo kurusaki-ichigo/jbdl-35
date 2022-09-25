@@ -8,6 +8,8 @@
         <option value="$PROJECT_DIR$/L9 - Hibernate Mappings - OnetoOne , OneToMany and ManyToOne/mappings/pom.xml" />
         <option value="$PROJECT_DIR$/L7 - Database - H2 and Mysql/pom.xml" />
         <option value="$PROJECT_DIR$/L11 - Mappings And Composite Key/enum/pom.xml" />
+        <option value="$PROJECT_DIR$/L14 - Spring Security Part 1/security/pom.xml" />
+        <option value="$PROJECT_DIR$/L14 - Spring Security Part 1/payment/pom.xml" />
       </list>
     </option>
   </component>
