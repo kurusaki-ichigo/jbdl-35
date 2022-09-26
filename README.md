@@ -54,3 +54,7 @@
 
     Lecture 16:
         *   Major Project - Ewallet
+
+#### **_Week 7_**
+    Lecture 17:
+          *   Major Project - Ewallet Part 2
