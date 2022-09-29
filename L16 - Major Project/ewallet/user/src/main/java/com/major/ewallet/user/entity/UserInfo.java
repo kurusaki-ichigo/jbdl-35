@@ -19,7 +19,7 @@ import java.time.OffsetDateTime;
 @Builder
 @Entity
 @Table( name = "user_info" , indexes = {@Index(name = "uniqueEmail", columnList = "email" , unique = true)})
-@JsonIgnoreProperties(value = { "contactNumber", "createdAt", "updatedAt"})
+@JsonIgnoreProperties(value = { "dob", "contactNumber", "createdAt", "updatedAt"})
 public class UserInfo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
