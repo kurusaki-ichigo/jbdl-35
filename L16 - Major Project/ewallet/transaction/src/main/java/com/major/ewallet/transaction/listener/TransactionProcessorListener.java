@@ -11,8 +11,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
+import org.springframework.util.concurrent.ListenableFuture;
+import org.springframework.util.concurrent.ListenableFutureCallback;
+
+import static com.major.ewallet.transaction.utils.KafkaMessageLogger.addCallBack;
 
 @Component
 @Slf4j
@@ -41,6 +46,7 @@ public class TransactionProcessorListener {
     @SneakyThrows
     @KafkaListener(topics = {TOPUP_SUCCESS}, groupId = "transaction_group")
     public void processSuccessTransaction(@Payload String message){
+        log.info(" *************** TOPUP_SUCCESS LISTENER :: start");
         /**
          * create a transientTransaction in pending
          *          --- topup wallet
@@ -48,13 +54,20 @@ public class TransactionProcessorListener {
          */
         TransientTransaction transientTransaction = objectMapper.readValue(message, TransientTransaction.class);
         Transaction transaction = transactionService.markTransaction(transientTransaction, TransactionStatus.SUCCESS);
-        kafkaTemplate.send(TRANSACTION_SUCCESS, objectMapper.writeValueAsString(transaction));
+        String messageOutbox = objectMapper.writeValueAsString(transaction);
+        addCallBack(messageOutbox , kafkaTemplate.send(TRANSACTION_SUCCESS, messageOutbox));
+        log.info(" *************** TOPUP_SUCCESS LISTENER :: end");
+
     }
+
+
+
 
 
     @SneakyThrows
     @KafkaListener(topics = {TOPUP_FAILURE}, groupId = "transaction_group")
     public void processFailedTransaction(@Payload String message){
+        log.info(" *************** TOPUP_FAILURE LISTENER :: end");
         /**
          * create a transientTransaction in pending
          *          --- topup wallet
@@ -62,7 +75,9 @@ public class TransactionProcessorListener {
          */
         TransientTransaction transientTransaction = objectMapper.readValue(message, TransientTransaction.class);
         Transaction transaction = transactionService.markTransaction(transientTransaction, TransactionStatus.FAILURE);
-        kafkaTemplate.send(TRANSACTION_FAILURE, objectMapper.writeValueAsString(transaction));
+        String messageOutbox = objectMapper.writeValueAsString(transaction);
+        addCallBack(messageOutbox , kafkaTemplate.send(TRANSACTION_FAILURE,messageOutbox));
+        log.info(" *************** TOPUP_FAILURE LISTENER :: end");
     }
 
 

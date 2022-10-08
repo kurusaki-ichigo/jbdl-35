@@ -35,6 +35,10 @@ public class UserCreatedListener {
          *
          *
          */
+
+        log.info("************************ SENDING EMAIL TO NEW USER CREATION : START ************************");
+
+
         NotificationUser notificationUser = objectMapper.readValue(message, NotificationUser.class);
 
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
@@ -46,6 +50,7 @@ public class UserCreatedListener {
                 "" +
                 " We will be crediting some balance in a short time as a good gesture for enrolling in our services. Thanks !");
         javaMailSender.send(simpleMailMessage);
+        log.info("************************ SENDING EMAIL TO NEW USER CREATION : END  ************************");
     }
 
 

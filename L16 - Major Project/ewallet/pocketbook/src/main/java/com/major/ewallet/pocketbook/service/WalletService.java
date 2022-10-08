@@ -5,6 +5,7 @@ import com.major.ewallet.pocketbook.exception.WalletExistsException;
 import com.major.ewallet.pocketbook.model.PendingTransaction;
 import com.major.ewallet.pocketbook.model.PocketBookUser;
 import com.major.ewallet.pocketbook.repository.WalletRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.util.Optional;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
+@Slf4j
 public class WalletService {
 
     @Autowired
@@ -46,34 +48,37 @@ public class WalletService {
          *  reduce amount and done
          *
          */
-        Optional<Wallet> senderWallet = repository.findByUserId(pendingTransaction.getSenderId());
-        if(senderWallet.isEmpty()){
-            throw new RuntimeException();
-        }
-
-        if(senderWallet.get().getBalance() < pendingTransaction.getAmount() ){
-            // insufficient balance
-            throw new RuntimeException();
-        }
-
-
-        Optional<Wallet> receiverWallet = repository.findByUserId(pendingTransaction.getReceiverId());
-        if(receiverWallet.isEmpty()){
-            throw new RuntimeException();
-        }
-
-        Wallet sender = senderWallet.get();
-        Wallet receiver = receiverWallet.get();
-
-        if(!Objects.equals(sender.getId(), systemId)){
+        log.info(" received {} ", pendingTransaction);
+        if(!Objects.equals(pendingTransaction.getSenderId(), systemId)) {
+            Optional<Wallet> senderWallet = repository.findByUserId(pendingTransaction.getSenderId());
+            if(senderWallet.isEmpty()){
+                log.error(" Sender wallet is not present ");
+                throw new RuntimeException();
+            }
+            if(senderWallet.get().getBalance() < pendingTransaction.getAmount() ){
+                // insufficient balance
+                log.error(" Sender wallet has insufficient balance ");
+                throw new RuntimeException();
+            }
+            Wallet sender = senderWallet.get();
             sender.setBalance(Double.sum(sender.getBalance() , -1 * pendingTransaction.getAmount()));
+            saveOrUpdate(sender);
         }
 
-        if(!Objects.equals(receiver.getId(), systemId)){
+
+        if(!Objects.equals(pendingTransaction.getReceiverId(), systemId)) {
+            Optional<Wallet> receiverWallet = repository.findByUserId(pendingTransaction.getReceiverId());
+            if(receiverWallet.isEmpty()){
+                log.error(" Receiver wallet is not present ");
+                throw new RuntimeException();
+            }
+            Wallet receiver = receiverWallet.get();
             receiver.setBalance(Double.sum(receiver.getBalance() , pendingTransaction.getAmount()));
+            saveOrUpdate(receiver);
         }
-        saveOrUpdate(sender);
-        saveOrUpdate(receiver);
+
+
+
     }
 
 

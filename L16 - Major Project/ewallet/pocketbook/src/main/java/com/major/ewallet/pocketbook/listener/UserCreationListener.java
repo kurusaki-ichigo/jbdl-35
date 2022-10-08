@@ -14,6 +14,8 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
+import static com.major.ewallet.pocketbook.utils.KafkaMessageLogger.addCallBack;
+
 @Component
 @Slf4j
 public class UserCreationListener {
@@ -36,6 +38,7 @@ public class UserCreationListener {
     @SneakyThrows
     @KafkaListener(topics = {USER_CREATED}, groupId = "pocketbook_group")
     public void receivedMessage(@Payload String message){
+        log.info(" *************** USER CREATED LISTENER :: start");
         /**
          *
          *
@@ -46,7 +49,8 @@ public class UserCreationListener {
             /**
              * A
              */
-            kafkaTemplate.send(NEW_WALLET_CREATED, objectMapper.writeValueAsString(newWallet));
+            String messageOutbox = objectMapper.writeValueAsString(newWallet);
+            addCallBack(messageOutbox , kafkaTemplate.send(NEW_WALLET_CREATED, messageOutbox));
             /**
              * B
              *
@@ -61,6 +65,7 @@ public class UserCreationListener {
              */
         }
 
+        log.info(" *************** USER CREATED LISTENER :: end");
 
 
     }
